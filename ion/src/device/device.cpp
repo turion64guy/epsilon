@@ -11,6 +11,7 @@ extern "C" {
 #include "sd_card.h"
 #include "backlight.h"
 #include "console.h"
+#include "rpi.h"
 #include "swd.h"
 #include "usb.h"
 #include "bench/bench.h"
@@ -162,7 +163,7 @@ void init() {
 
 #if EPSILON_DEVICE_BENCH
   if (consolePeerConnectedOnBoot) {
-    Ion::Device::Bench::run();
+  //  Ion::Device::Bench::run();
   }
 #endif
 }
@@ -184,9 +185,11 @@ void initPeripherals() {
 #endif
   Console::Device::init();
   SWD::Device::init();
+  Rpi::Device::init();
 }
 
 void shutdownPeripherals(bool keepLEDAwake) {
+  Rpi::Device::shutdown();
   SWD::Device::shutdown();
   Console::Device::shutdown();
 #if USE_SD_CARD
@@ -295,6 +298,7 @@ void initClocks() {
 #if USE_SD_CARD
   apb2enr.setSDIOEN(true);
 #endif
+  apb2enr.setSPI1EN(true);
   RCC.APB2ENR()->set(apb2enr);
 }
 

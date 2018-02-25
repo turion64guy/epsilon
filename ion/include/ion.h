@@ -11,6 +11,7 @@
 #include <ion/led.h>
 #include <ion/power.h>
 #include <ion/storage.h>
+#include <ion/rpi.h>
 #include <ion/usb.h>
 #include <stdint.h>
 #include <string.h>
