@@ -64,13 +64,12 @@ nof_objs = $(addprefix apps/nes/nofrendo/,\
 	nofrendo.o\
 	epsilon/nofrendo_wrapper.o\
 	epsilon/osd_epsilon.o\
+	epsilon/rom.o\
 	epsilon/stubs.o\
 )
 
-ifneq ($(PLATFORM),device)
-nof_objs += $(addprefix apps/nes/nofrendo/,\
-	epsilon/rom.o\
-)
+$(nof_objs): SFLAGS := $(subst -Os,-O2,$(SFLAGS))
+
 apps/nes/nofrendo/epsilon/rom.c: FORCE
 	@echo "BIN     $@"
 	$(Q) echo "const unsigned char _rom_data[] = {" > $@
@@ -80,8 +79,5 @@ apps/nes/nofrendo/epsilon/rom.c: FORCE
 FORCE:
 
 products += apps/nes/nofrendo/epsilon/rom.c
-endif
-
-$(nof_objs): SFLAGS := $(subst -Os,-O2,$(SFLAGS))
 
 objs += $(nof_objs)
